@@ -1,0 +1,321 @@
+/* =========================================================
+   GALLERY DETAIL — MODERN RESPONSIVE / MOBILE + DESKTOP UX
+   Header + main photo stay fixed. Only detail content scrolls.
+   ========================================================= */
+
+body:has(#gallery),
+body.gallery-route { overflow-x: hidden; }
+
+#gallery,
+#gallery * { box-sizing: border-box; }
+
+#gallery .gallery-lightbox {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #fff !important;
+  overscroll-behavior: none !important;
+  z-index: 110000 !important;
+}
+
+/* Fixed detail header — never participates in page scrolling */
+#gallery .gallery-lightbox > div:first-child {
+  position: relative !important;
+  flex: 0 0 68px !important;
+  width: 100% !important;
+  height: 68px !important;
+  min-height: 68px !important;
+  z-index: 300 !important;
+  box-sizing: border-box !important;
+}
+
+/* Always show an explicit navigation label on mobile and desktop */
+#gallery .gallery-lightbox > div:first-child button[aria-label="Kembali"] {
+  min-height: 42px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  touch-action: manipulation !important;
+}
+
+#gallery .gallery-lightbox > div:first-child button[aria-label="Kembali"] span {
+  display: inline-block !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+
+#gallery .gallery-lightbox > div:first-child button[aria-label="Kembali"] span::after {
+  content: "Kembali ke Daftar Foto" !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  font-weight: 800 !important;
+  letter-spacing: .02em !important;
+  color: inherit !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* MAIN PHOTO: fixed/stable frame, proportional and never cropped */
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child {
+  position: relative !important;
+  flex: 0 0 clamp(300px, 55svh, 700px) !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  height: clamp(300px, 55svh, 700px) !important;
+  max-height: 700px !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #030712 !important;
+  contain: layout paint style !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+  z-index: 100 !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child > div {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child img {
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  flex: 0 0 auto !important;
+  margin: 0 auto !important;
+  touch-action: none !important;
+  pointer-events: none !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child video,
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child iframe {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  border: 0 !important;
+  touch-action: none !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child button {
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  z-index: 30 !important;
+}
+
+/* SINGLE SCROLL OWNER: metadata + album only */
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior-y: contain !important;
+  overscroll-behavior-x: none !important;
+  touch-action: pan-y !important;
+  scroll-behavior: auto !important;
+  scrollbar-width: thin !important;
+  background: #fff !important;
+  padding-bottom: max(24px, env(safe-area-inset-bottom)) !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div {
+  overflow: visible !important;
+  min-height: auto !important;
+  max-height: none !important;
+}
+
+/* Metadata — consistent responsive spacing */
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:first-child {
+  width: 100% !important;
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+  padding: clamp(20px, 3vw, 36px) clamp(18px, 4vw, 48px) 18px !important;
+}
+
+#gallery .gallery-lightbox h2 {
+  max-width: 900px !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Album — responsive grid with precise proportions */
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 6px clamp(16px, 3vw, 40px) 32px !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:last-child {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: clamp(10px, 2vw, 18px) !important;
+  width: 100% !important;
+  align-items: start !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:last-child > button {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  aspect-ratio: 4 / 3 !important;
+  height: auto !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 14px !important;
+  touch-action: manipulation !important;
+  transform: translateZ(0) !important;
+  cursor: pointer !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:last-child > button img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+#gallery .gallery-lightbox img,
+#gallery .gallery-lightbox video,
+#gallery .gallery-lightbox iframe,
+#gallery .gallery-lightbox button { animation: none !important; }
+
+/* Mobile */
+@media (max-width: 767px) {
+  html:has(#gallery .gallery-lightbox),
+  body:has(#gallery .gallery-lightbox) {
+    overflow: hidden !important;
+    width: 100% !important;
+    height: 100% !important;
+    overscroll-behavior: none !important;
+  }
+
+  #gallery .gallery-lightbox > div:first-child {
+    flex-basis: 64px !important;
+    height: 64px !important;
+    min-height: 64px !important;
+  }
+
+  #gallery .gallery-lightbox > div:first-child button[aria-label="Kembali"] {
+    padding: 7px 10px !important;
+    font-size: 12px !important;
+  }
+
+  #gallery .gallery-lightbox > div:first-child button[aria-label="Kembali"] span::after {
+    font-size: 11px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:first-child {
+    flex-basis: clamp(245px, 42svh, 430px) !important;
+    height: clamp(245px, 42svh, 430px) !important;
+    max-height: 430px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+    overscroll-behavior-y: contain !important;
+    padding-bottom: max(28px, env(safe-area-inset-bottom)) !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:first-child {
+    padding: 20px 18px 14px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+    padding: 8px 16px 30px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:last-child {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:last-child > button {
+    border-radius: 12px !important;
+  }
+}
+
+/* Tablet / desktop — same behavior, larger working area */
+@media (min-width: 768px) {
+  #gallery .gallery-lightbox > div:first-child {
+    flex-basis: 68px !important;
+    height: 68px !important;
+    min-height: 68px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:first-child {
+    flex-basis: clamp(360px, 55svh, 700px) !important;
+    height: clamp(360px, 55svh, 700px) !important;
+    max-height: 700px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-y !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > div:last-child {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  #gallery .gallery-lightbox > div:nth-child(2) > div:first-child {
+    flex-basis: min(62svh, 760px) !important;
+    height: min(62svh, 760px) !important;
+    max-height: 760px !important;
+  }
+
+  #gallery .gallery-lightbox > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) {
+    max-width: 1280px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #gallery *,
+  #gallery *::before,
+  #gallery *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

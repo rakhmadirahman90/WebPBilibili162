@@ -1,0 +1,169 @@
+/* FINAL GALLERY BACK BUTTON FIX */
+.gallery-lightbox button[aria-label="Kembali"] {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 235px !important;
+  min-height: 46px !important;
+  height: auto !important;
+  padding: 9px 16px !important;
+  margin: 0 !important;
+  gap: 8px !important;
+  position: relative !important;
+  z-index: 9999999 !important;
+  overflow: visible !important;
+  white-space: nowrap !important;
+  color: #ffffff !important;
+  background: rgba(30, 41, 59, 0.96) !important;
+  border: 1px solid rgba(255,255,255,.22) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,.28) !important;
+  cursor: pointer !important;
+}
+
+.gallery-lightbox button[aria-label="Kembali"] svg {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 21px !important;
+  height: 21px !important;
+  min-width: 21px !important;
+  min-height: 21px !important;
+  flex: 0 0 21px !important;
+  color: #ffffff !important;
+}
+
+.gallery-lightbox button[aria-label="Kembali"] span,
+.gallery-lightbox button[aria-label="Kembali"] span.hidden {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: auto !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #ffffff !important;
+  font-size: 12px !important;
+  line-height: 1.2 !important;
+  font-weight: 900 !important;
+  letter-spacing: .025em !important;
+  white-space: nowrap !important;
+}
+
+.gallery-lightbox button[aria-label="Kembali"] span::after {
+  content: " ke Daftar Foto" !important;
+  display: inline !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  color: inherit !important;
+  font: inherit !important;
+  white-space: nowrap !important;
+}
+
+.gallery-lightbox button[aria-label="Kembali"]:hover {
+  background: #1e293b !important;
+  color: #ffffff !important;
+}
+
+/* HARD RESET: remove inherited/pseudo dark overlays from gallery thumbnails. */
+#gallery .gallery-card,
+#gallery .gallery-card > div:first-child,
+#gallery .gallery-card > div:first-child > div,
+#gallery .gallery-card > div:first-child > div:first-child {
+  isolation: isolate !important;
+}
+
+#gallery .gallery-card::before,
+#gallery .gallery-card::after,
+#gallery .gallery-card > div:first-child::before,
+#gallery .gallery-card > div:first-child::after,
+#gallery .gallery-card > div:first-child > div::before,
+#gallery .gallery-card > div:first-child > div::after,
+#gallery .gallery-card > div:first-child > div:first-child::before,
+#gallery .gallery-card > div:first-child > div:first-child::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  pointer-events: none !important;
+}
+
+#gallery .gallery-card > div:first-child,
+#gallery .gallery-card > div:first-child > div.relative,
+#gallery .gallery-card > div:first-child > div[class*="overflow-hidden"] {
+  background: transparent !important;
+  filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+}
+
+#gallery .gallery-card > div:first-child img,
+#gallery .gallery-card > div:first-child video {
+  position: relative !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 1 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  mix-blend-mode: normal !important;
+  transform: none !important;
+  brightness: 1 !important;
+  contrast: 1 !important;
+  saturate: 1 !important;
+}
+
+/* FINAL: the large photo viewer must never show a black letterbox/background. */
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child,
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child > div,
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child img,
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child video,
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child iframe {
+  background: #ffffff !important;
+}
+
+#gallery .gallery-lightbox > div:nth-child(2) > div:first-child img {
+  filter: none !important;
+  -webkit-filter: none !important;
+  opacity: 1 !important;
+  mix-blend-mode: normal !important;
+  box-shadow: none !important;
+}
+
+#gallery .gallery-card > div:first-child > div[class*="bg-[#22c55e]"] {
+  z-index: 20 !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+#gallery .gallery-card > div:first-child > button {
+  z-index: 30 !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 767px) {
+  .gallery-lightbox button[aria-label="Kembali"] {
+    min-width: 205px !important;
+    min-height: 44px !important;
+    padding: 8px 12px !important;
+    gap: 7px !important;
+  }
+
+  .gallery-lightbox button[aria-label="Kembali"] span,
+  .gallery-lightbox button[aria-label="Kembali"] span.hidden {
+    font-size: 11px !important;
+  }
+}

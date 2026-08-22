@@ -1,0 +1,323 @@
+/*
+ * PUBLIC NEWS / PRESTASI — RESPONSIVE LAYOUT HARDENING
+ *
+ * Goals:
+ * 1. Keep the document height driven by the actual article content.
+ * 2. Remove unexplained vertical gaps on phones.
+ * 3. Make the News filter compact and intentional on mobile.
+ * 4. Keep article cards, pagination and footer in normal document flow.
+ * 5. Preserve the existing desktop layout and interactions.
+ * 6. Prevent the dedicated-page flex shell from shrinking the News view
+ *    and placing the Footer on top of overflowing article cards.
+ */
+
+@media (max-width: 767px) {
+  /* -----------------------------------------------------------------------
+     1) RELEASE VIEWPORT/FLEX CONSTRAINTS
+     ----------------------------------------------------------------------- */
+  #root:has(#news),
+  #root:has(.public-news-modern) {
+    min-height: 100dvh !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #root *:has(#news),
+  #root *:has(.public-news-modern) {
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+
+  #news,
+  .public-news-modern {
+    width: 100% !important;
+    height: auto !important;
+    min-height: fit-content !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+    display: block !important;
+  }
+
+  /* News page should not carry a large artificial bottom reserve on phones. */
+  #news {
+    padding-top: 12px !important;
+    padding-bottom: 24px !important;
+  }
+
+  #news > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* -----------------------------------------------------------------------
+     1A) CRITICAL FIX — DEDICATED NEWS PAGE MUST GROW WITH ITS CONTENT
+     -----------------------------------------------------------------------
+     App.tsx wraps dedicated views in two nested flex-grow/min-h-0 containers.
+     On a short mobile viewport those containers can legally shrink to the
+     viewport height while the News component continues overflowing below.
+     The Footer then follows the shortened flex box and visually cuts through
+     the next article card. For News/Prestasi only, release that flex sizing.
+     */
+  #root:has(#news) .flex-grow.w-full.flex.flex-col.min-h-0,
+  #root:has(.public-news-modern) .flex-grow.w-full.flex.flex-col.min-h-0 {
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    height: auto !important;
+    min-height: max-content !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  #root:has(#news) .flex.flex-col.min-h-screen.w-full,
+  #root:has(.public-news-modern) .flex.flex-col.min-h-screen.w-full {
+    height: auto !important;
+    min-height: 100dvh !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* The footer is a sibling AFTER the dedicated content. Keep it in the
+     document flow and add a small separation so it can never overlap the
+     last card or pagination. */
+  #root:has(#news) #footer-section,
+  #root:has(.public-news-modern) #footer-section {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 1 !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 74px !important;
+    max-height: none !important;
+    margin-top: 18px !important;
+    clear: both !important;
+    overflow: visible !important;
+    transform: none !important;
+  }
+
+  #root:has(#news) #footer-section > div,
+  #root:has(.public-news-modern) #footer-section > div {
+    min-height: 74px !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* -----------------------------------------------------------------------
+     2) MOBILE FILTER — COMPACT, CLEAN, PROFESSIONAL
+     ----------------------------------------------------------------------- */
+  #news > div > .grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    width: 100% !important;
+  }
+
+  #news > div > .grid > div:first-child {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    top: auto !important;
+  }
+
+  /* Filter card: remove the excessive vertical whitespace visible in the
+     previous mobile rendering. */
+  #news > div > .grid > div:first-child > div:first-child {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.07) !important;
+  }
+
+  #news > div > .grid > div:first-child > div:first-child > div:first-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 11px !important;
+    min-height: 0 !important;
+  }
+
+  #news > div > .grid > div:first-child > div:first-child > div:first-child h3 {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  #news > div > .grid > div:first-child > div:first-child > button {
+    width: 100% !important;
+    height: 46px !important;
+    margin-top: 12px !important;
+    padding: 0 14px !important;
+    border-radius: 11px !important;
+    font-size: 11px !important;
+    line-height: 1 !important;
+  }
+
+  /* When the mobile filter is expanded, keep each control compact. */
+  #news > div > .grid > div:first-child > div:first-child > div:nth-child(2) {
+    margin-top: 12px !important;
+    gap: 12px !important;
+  }
+
+  #news > div > .grid > div:first-child input,
+  #news > div > .grid > div:first-child button {
+    min-width: 0;
+  }
+
+  #news > div > .grid > div:first-child input {
+    min-height: 44px !important;
+  }
+
+  /* The desktop prayer widget remains hidden by the component itself. */
+  #news > div > .grid > div:first-child > div:last-child {
+    display: none !important;
+  }
+
+  /* -----------------------------------------------------------------------
+     3) ARTICLE GRID — FULL WIDTH ON PHONE, CONSISTENT RHYTHM
+     ----------------------------------------------------------------------- */
+  #news > div > .grid > div:last-child {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    border-radius: 17px !important;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, 0.07) !important;
+    transform: none !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid > div:active {
+    transform: scale(0.995) !important;
+  }
+
+  /* Keep card image ratios stable on narrow Android screens. */
+  #news > div > .grid > div:last-child > .grid > div > div:first-child {
+    aspect-ratio: 16 / 9 !important;
+    min-height: 0 !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid > div > div:last-child {
+    padding: 14px !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid > div h3 {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 7px !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid > div p {
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    margin-bottom: 12px !important;
+  }
+
+  #news > div > .grid > div:last-child > .grid > div .border-t {
+    padding-top: 10px !important;
+  }
+
+  /* Empty state follows the same card rhythm. */
+  #news > div > .grid > div:last-child > div:not(.grid) {
+    margin-top: 14px !important;
+    padding: 42px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  /* Pagination: compact and never pushed by artificial spacing. */
+  #news > div > .grid > div:last-child > div[class*="justify-center"] {
+    margin-top: 20px !important;
+    padding-bottom: 4px !important;
+  }
+
+  #news > div > .grid > div:last-child > div[class*="justify-center"] button {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+  }
+
+  /* -----------------------------------------------------------------------
+     5) MODERN PUBLIC NEWS COMPONENT — SAME MOBILE RHYTHM
+     ----------------------------------------------------------------------- */
+  .public-news-modern {
+    padding-bottom: 0 !important;
+  }
+
+  .public-news-modern > div:last-child {
+    padding-bottom: 24px !important;
+  }
+
+  .public-news-modern section {
+    border-radius: 16px !important;
+  }
+
+  .public-news-modern .grid {
+    gap: 14px !important;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   PUBLIC PRESTASI SECTION — MOBILE SPACING
+   This keeps the existing home-page achievement section compact without
+   changing its desktop presentation.
+   ------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  #prestasi {
+    padding-top: 42px !important;
+    padding-bottom: 42px !important;
+  }
+
+  #prestasi > div:last-child {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  #prestasi > div:last-child > div:first-child {
+    margin-bottom: 26px !important;
+  }
+
+  #prestasi > div:last-child > div:first-child h2 {
+    font-size: 28px !important;
+    line-height: 1.1 !important;
+  }
+
+  #prestasi > div:last-child > div:first-child p {
+    font-size: 13px !important;
+    line-height: 1.55 !important;
+  }
+
+  #prestasi > div:last-child > div:last-child {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  #prestasi > div:last-child > div:last-child > div {
+    padding: 16px !important;
+    border-radius: 18px !important;
+  }
+
+  #prestasi > div:last-child > div:last-child > div h3 {
+    font-size: 17px !important;
+    line-height: 1.35 !important;
+  }
+}
