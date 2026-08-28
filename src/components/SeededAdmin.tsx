@@ -1,18 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Swal from 'sweetalert2';
 import { supabase } from '../supabase';
-import {
-  ChevronLeft,
-  ChevronRight,
-  Edit3,
-  Filter,
-  Plus,
-  RefreshCw,
-  Search,
-  ShieldCheck,
-  Trash2,
-  X,
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Edit3, Filter, Plus, RefreshCw, Search, ShieldCheck, Trash2, X } from 'lucide-react';
 
 type SeededPlayer = {
   id: number;
@@ -55,7 +44,6 @@ const emptyForm: FormState = {
 };
 
 const PAGE_SIZE = 25;
-
 const clean = (value: unknown) => String(value ?? '').trim();
 const normalize = (value: string) => value.toLocaleLowerCase('id-ID').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
@@ -141,6 +129,11 @@ export default function SeededAdmin() {
   const qualityPercent = rows.length ? Math.round((qualityCount / rows.length) * 100) : 0;
   const activeCount = rows.filter((r) => normalize(clean(r.validity_status)).includes('valid') || !clean(r.validity_status)).length;
 
+  const closeForm = () => {
+    setEditing(null);
+    setForm(emptyForm);
+  };
+
   const openCreate = () => {
     setEditing(null);
     setForm({ ...emptyForm, source_sheet: options.source_sheet[0] || '' });
@@ -199,7 +192,7 @@ export default function SeededAdmin() {
         archive_category: form.archive_category.trim() || null,
         gender: form.gender.trim() || null,
         eligible_category: form.eligible_category.trim() || null,
-        normalized_name: (form.normalized_name.trim() || normalize(form.player_name)),
+        normalized_name: form.normalized_name.trim() || normalize(form.player_name),
         raw_data: rawData,
       };
 
@@ -210,8 +203,7 @@ export default function SeededAdmin() {
       if (error) throw error;
 
       await Swal.fire({ title: editing ? 'Seeded diperbarui' : 'Seeded ditambahkan', text: 'Data berhasil disimpan ke database.', icon: 'success', timer: 1300, showConfirmButton: false, background: '#0f172a', color: '#fff' });
-      setEditing(null);
-      setForm(emptyForm);
+      closeForm();
       await loadRows();
     } catch (error: any) {
       console.error(error);
@@ -261,24 +253,23 @@ export default function SeededAdmin() {
   return (
     <div className="min-h-full bg-[#070d1a] text-white p-3 sm:p-5 md:p-8">
       <div className="mx-auto max-w-[1600px] space-y-5">
-        <section className="rounded-3xl border border-blue-500/20 bg-gradient-to-br from-[#0d1a32] via-[#0a1427] to-[#070d1a] p-5 sm:p-7 shadow-2xl">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+        <section className="rounded-3xl border border-blue-500/20 bg-gradient-to-br from-[#0d1a32] via-[#0a1427] to-[#070d1a] p-4 sm:p-7 shadow-2xl">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="min-w-0">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-amber-300"><ShieldCheck size={14} /> Seeded • Database Terhubung</div>
               <h1 className="text-2xl font-black uppercase italic tracking-tight sm:text-4xl">Seeded Resmi Bilibili 162</h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">Kelola 1.103 data seeded dari sumber PBSI dengan pencarian, filter, tambah, edit, dan hapus yang terhubung langsung ke Supabase.</p>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300 sm:text-base">Kelola seluruh data seeded dengan pencarian, filter, tambah, edit, hapus, dan sinkronisasi langsung ke Supabase.</p>
             </div>
-            <div className="flex gap-2">
-              <button onClick={loadRows} disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-xs font-black uppercase tracking-wider text-slate-200 hover:bg-slate-800 disabled:opacity-50"><RefreshCw size={15} className={loading ? 'animate-spin' : ''} /> Refresh</button>
-              <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-3 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-blue-900/30 hover:bg-blue-500"><Plus size={16} /> Tambah Seeded</button>
+            <div className="grid grid-cols-2 gap-2 sm:flex">
+              <button onClick={loadRows} disabled={loading} className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-3 py-3 text-[11px] font-black uppercase tracking-wider text-slate-200 hover:bg-slate-800 disabled:opacity-50"><RefreshCw size={15} className={loading ? 'animate-spin' : ''} /> Refresh</button>
+              <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-3 py-3 text-[11px] font-black uppercase tracking-wider text-white shadow-lg shadow-blue-900/30 hover:bg-blue-500"><Plus size={16} /> Tambah Pemain</button>
             </div>
           </div>
-
-          <div className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4"><div className="text-[10px] font-black uppercase tracking-wider text-slate-500">Total Seeded</div><div className="mt-1 text-3xl font-black">{rows.length.toLocaleString('id-ID')}</div></div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4"><div className="text-[10px] font-black uppercase tracking-wider text-slate-500">Kualitas Data</div><div className="mt-1 text-3xl font-black">{qualityPercent}%</div></div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4"><div className="text-[10px] font-black uppercase tracking-wider text-slate-500">Hasil Filter</div><div className="mt-1 text-3xl font-black">{filteredRows.length.toLocaleString('id-ID')}</div></div>
-            <div className="rounded-2xl border border-white/10 bg-black/20 p-4"><div className="text-[10px] font-black uppercase tracking-wider text-slate-500">Aktif / Valid</div><div className="mt-1 text-3xl font-black">{activeCount.toLocaleString('id-ID')}</div></div>
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4"><div className="text-[9px] font-black uppercase tracking-wider text-slate-500">Total Seeded</div><div className="mt-1 text-2xl sm:text-3xl font-black">{rows.length.toLocaleString('id-ID')}</div></div>
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4"><div className="text-[9px] font-black uppercase tracking-wider text-slate-500">Kualitas Data</div><div className="mt-1 text-2xl sm:text-3xl font-black">{qualityPercent}%</div></div>
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4"><div className="text-[9px] font-black uppercase tracking-wider text-slate-500">Hasil Filter</div><div className="mt-1 text-2xl sm:text-3xl font-black">{filteredRows.length.toLocaleString('id-ID')}</div></div>
+            <div className="rounded-2xl border border-white/10 bg-black/20 p-3 sm:p-4"><div className="text-[9px] font-black uppercase tracking-wider text-slate-500">Aktif / Valid</div><div className="mt-1 text-2xl sm:text-3xl font-black">{activeCount.toLocaleString('id-ID')}</div></div>
           </div>
         </section>
 
@@ -310,32 +301,50 @@ export default function SeededAdmin() {
         </section>
 
         <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#0b1324] shadow-xl">
-          <div className="overflow-x-auto">
+          <div className="hidden overflow-x-auto md:block">
             <table className="min-w-[1200px] w-full text-left text-xs">
               <thead className="bg-slate-950 text-[10px] uppercase tracking-wider text-slate-500">
-                <tr>
-                  <th className="px-4 py-4">#</th><th className="px-4 py-4">Pemain</th><th className="px-4 py-4">PB / Klub</th><th className="px-4 py-4">Kategori</th><th className="px-4 py-4">Kelas</th><th className="px-4 py-4">Wilayah</th><th className="px-4 py-4">Sumber</th><th className="px-4 py-4">Kualitas</th><th className="px-4 py-4">Status</th><th className="px-4 py-4 text-right">Aksi</th>
-                </tr>
+                <tr><th className="px-4 py-4">#</th><th className="px-4 py-4">Pemain</th><th className="px-4 py-4">PB / Klub</th><th className="px-4 py-4">Kategori</th><th className="px-4 py-4">Kelas</th><th className="px-4 py-4">Wilayah</th><th className="px-4 py-4">Sumber</th><th className="px-4 py-4">Kualitas</th><th className="px-4 py-4">Status</th><th className="px-4 py-4 text-right">Aksi</th></tr>
               </thead>
               <tbody className="divide-y divide-slate-800/70">
                 {loading ? <tr><td colSpan={10} className="px-4 py-16 text-center text-slate-500">Memuat database seeded...</td></tr> : visibleRows.length === 0 ? <tr><td colSpan={10} className="px-4 py-16 text-center text-slate-500">Tidak ada data yang sesuai dengan pencarian/filter.</td></tr> : visibleRows.map((row, index) => (
                   <tr key={row.id} className="hover:bg-blue-500/[0.04]">
                     <td className="px-4 py-4 font-bold text-slate-500">{(safePage - 1) * PAGE_SIZE + index + 1}</td>
                     <td className="max-w-[260px] px-4 py-4"><div className="font-bold text-white">{row.player_name}</div><div className="mt-1 text-[10px] text-slate-600">ID {row.id} • No. Sumber {row.source_no ?? '—'}</div></td>
-                    <td className="px-4 py-4 text-slate-300">{row.club_name || '—'}</td>
-                    <td className="px-4 py-4 text-slate-300">{row.eligible_category || '—'}</td>
-                    <td className="px-4 py-4 text-slate-300">{row.division_level || '—'}</td>
-                    <td className="px-4 py-4 text-slate-300">{row.region_status || '—'}</td>
-                    <td className="px-4 py-4 text-slate-400">{row.source_sheet}</td>
-                    <td className="px-4 py-4"><span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{row.seeded_quality || '—'}</span></td>
-                    <td className="px-4 py-4 text-slate-400">{row.validity_status || 'Belum diisi'}</td>
+                    <td className="px-4 py-4 text-slate-300">{row.club_name || '—'}</td><td className="px-4 py-4 text-slate-300">{row.eligible_category || '—'}</td><td className="px-4 py-4 text-slate-300">{row.division_level || '—'}</td><td className="px-4 py-4 text-slate-300">{row.region_status || '—'}</td><td className="px-4 py-4 text-slate-400">{row.source_sheet}</td><td className="px-4 py-4"><span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{row.seeded_quality || '—'}</span></td><td className="px-4 py-4 text-slate-400">{row.validity_status || 'Belum diisi'}</td>
                     <td className="px-4 py-4"><div className="flex justify-end gap-2"><button onClick={() => openEdit(row)} className="rounded-lg border border-blue-500/20 bg-blue-500/10 p-2 text-blue-300 hover:bg-blue-500/20" title="Edit"><Edit3 size={15} /></button><button onClick={() => removeRow(row)} className="rounded-lg border border-red-500/20 bg-red-500/10 p-2 text-red-300 hover:bg-red-500/20" title="Hapus"><Trash2 size={15} /></button></div></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div className="flex items-center justify-between border-t border-slate-800 px-4 py-3">
+
+          <div className="md:hidden divide-y divide-slate-800/70">
+            {loading ? <div className="px-4 py-16 text-center text-slate-500">Memuat database seeded...</div> : visibleRows.length === 0 ? <div className="px-4 py-16 text-center text-slate-500">Tidak ada data yang sesuai.</div> : visibleRows.map((row, index) => (
+              <article key={row.id} className="p-4 active:bg-blue-500/[0.04]">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="text-[10px] font-black uppercase tracking-wider text-slate-500">#{(safePage - 1) * PAGE_SIZE + index + 1} • ID {row.id}</div>
+                    <h3 className="mt-1 truncate text-base font-black text-white">{row.player_name}</h3>
+                    <p className="mt-0.5 truncate text-xs text-slate-400">{row.club_name || 'PB / Klub belum diisi'}</p>
+                  </div>
+                  <span className="shrink-0 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-1 text-[9px] font-black uppercase text-emerald-300">{row.seeded_quality || '—'}</span>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-[11px]">
+                  <div className="rounded-xl bg-slate-950/70 p-2.5"><span className="block text-[9px] uppercase text-slate-600">Kategori</span><b className="text-slate-300">{row.eligible_category || '—'}</b></div>
+                  <div className="rounded-xl bg-slate-950/70 p-2.5"><span className="block text-[9px] uppercase text-slate-600">Kelas</span><b className="text-slate-300">{row.division_level || '—'}</b></div>
+                  <div className="rounded-xl bg-slate-950/70 p-2.5"><span className="block text-[9px] uppercase text-slate-600">Wilayah</span><b className="text-slate-300">{row.region_status || '—'}</b></div>
+                  <div className="rounded-xl bg-slate-950/70 p-2.5"><span className="block text-[9px] uppercase text-slate-600">Sumber</span><b className="block truncate text-slate-300">{row.source_sheet}</b></div>
+                </div>
+                <div className="mt-3 flex gap-2">
+                  <button onClick={() => openEdit(row)} className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/10 px-3 py-2.5 text-[11px] font-black uppercase tracking-wider text-blue-300 active:scale-[.98]"><Edit3 size={15} /> Edit</button>
+                  <button onClick={() => removeRow(row)} className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2.5 text-[11px] font-black uppercase tracking-wider text-red-300 active:scale-[.98]"><Trash2 size={15} /> Hapus</button>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between border-t border-slate-800 px-3 py-3 sm:px-4">
             <button disabled={safePage <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="inline-flex items-center gap-1 rounded-xl border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 disabled:opacity-30"><ChevronLeft size={15} /> Sebelumnya</button>
             <div className="text-[10px] font-black uppercase tracking-wider text-slate-500">{filteredRows.length.toLocaleString('id-ID')} hasil</div>
             <button disabled={safePage >= totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="inline-flex items-center gap-1 rounded-xl border border-slate-700 px-3 py-2 text-xs font-bold text-slate-300 disabled:opacity-30">Berikutnya <ChevronRight size={15} /></button>
@@ -346,13 +355,13 @@ export default function SeededAdmin() {
       {(editing || form.source_sheet !== '' || form.player_name !== '') && (
         <div className="fixed inset-0 z-[100000] overflow-y-auto bg-black/70 p-3 backdrop-blur-sm sm:p-6">
           <div className="mx-auto my-4 max-w-4xl rounded-3xl border border-slate-700 bg-[#0b1324] shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4 sm:px-6"><div><h2 className="text-lg font-black uppercase">{editing ? 'Edit Seeded' : 'Tambah Seeded'}</h2><p className="text-xs text-slate-500">Semua perubahan tersimpan langsung ke Supabase.</p></div><button onClick={() => { setEditing(null); setForm(emptyForm); }} className="rounded-xl p-2 text-slate-400 hover:bg-slate-800 hover:text-white"><X size={20} /></button></div>
+            <div className="flex items-center justify-between border-b border-slate-800 px-5 py-4 sm:px-6"><div><h2 className="text-lg font-black uppercase">{editing ? 'Edit Data Pemain' : 'Tambah Data Pemain'}</h2><p className="text-xs text-slate-500">Perubahan tersimpan langsung ke database.</p></div><button onClick={closeForm} className="rounded-xl p-2 text-slate-400 hover:bg-slate-800 hover:text-white"><X size={20} /></button></div>
             <form onSubmit={submit} className="p-5 sm:p-6">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {formFields.map(([key, label, type]) => <label key={String(key)}><span className="mb-1.5 block text-[10px] font-black uppercase tracking-wider text-slate-400">{label}</span><input type={type} value={(form[key] as any) ?? ''} onChange={(e) => setForm((f) => ({ ...f, [key]: type === 'number' ? (e.target.value ? Number(e.target.value) : null) : e.target.value }))} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white outline-none focus:border-blue-500" /></label>)}
               </div>
-              <label className="mt-4 block"><span className="mb-1.5 block text-[10px] font-black uppercase tracking-wider text-slate-400">Raw Data JSON</span><textarea rows={9} value={form.raw_data_text} onChange={(e) => setForm((f) => ({ ...f, raw_data_text: e.target.value }))} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 font-mono text-xs text-slate-200 outline-none focus:border-blue-500" /></label>
-              <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"><button type="button" onClick={() => { setEditing(null); setForm(emptyForm); }} className="rounded-xl border border-slate-700 px-5 py-3 text-xs font-black uppercase tracking-wider text-slate-300">Batal</button><button disabled={saving} type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-xs font-black uppercase tracking-wider text-white hover:bg-blue-500 disabled:opacity-50">{saving ? <RefreshCw size={15} className="animate-spin" /> : editing ? <Edit3 size={15} /> : <Plus size={15} />}{saving ? 'Menyimpan...' : editing ? 'Simpan Perubahan' : 'Simpan Seeded'}</button></div>
+              <label className="mt-4 block"><span className="mb-1.5 block text-[10px] font-black uppercase tracking-wider text-slate-400">Raw Data JSON</span><textarea rows={8} value={form.raw_data_text} onChange={(e) => setForm((f) => ({ ...f, raw_data_text: e.target.value }))} className="w-full rounded-xl border border-slate-700 bg-slate-950 px-3 py-2.5 font-mono text-xs text-slate-200 outline-none focus:border-blue-500" /></label>
+              <div className="mt-5 grid grid-cols-2 gap-2 sm:flex sm:flex-row sm:justify-end"><button type="button" onClick={closeForm} className="rounded-xl border border-slate-700 px-5 py-3 text-xs font-black uppercase tracking-wider text-slate-300">Batal</button><button disabled={saving} type="submit" className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-xs font-black uppercase tracking-wider text-white hover:bg-blue-500 disabled:opacity-50">{saving ? <RefreshCw size={15} className="animate-spin" /> : editing ? <Edit3 size={15} /> : <Plus size={15} />}{saving ? 'Menyimpan...' : editing ? 'Simpan Perubahan' : 'Simpan Pemain'}</button></div>
             </form>
           </div>
         </div>
