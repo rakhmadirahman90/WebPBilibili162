@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "prebuild": "node scripts/patch-admin-member-menus.mjs && node scripts/patch-navbar-realtime.mjs && node scripts/patch-performance.mjs && node scripts/patch-public-routing.mjs && node scripts/patch-modern-public-news.mjs && node scripts/patch-news-share-preview.mjs && node scripts/patch-gallery-mobile-detail.mjs && node scripts/patch-gallery-supabase-source.mjs && node scripts/patch-gallery-album-mobile.mjs && node scripts/patch-gallery-photo-grid.mjs && node scripts/patch-gallery-share-preview.mjs && node scripts/patch-gallery-lightbox-grid.mjs && node scripts/patch-import-surat.mjs && node scripts/patch-seeded-admin.mjs",
+    "prebuild": "node scripts/patch-admin-member-menus.mjs && node scripts/patch-navbar-realtime.mjs && node scripts/patch-performance.mjs && node scripts/patch-public-routing.mjs && node scripts/patch-modern-public-news.mjs && node scripts/patch-news-share-preview.mjs && node scripts/patch-gallery-mobile-detail.mjs && node scripts/patch-gallery-supabase-source.mjs && node scripts/patch-gallery-album-mobile.mjs && node scripts/patch-gallery-photo-grid.mjs && node scripts/patch-gallery-share-preview.mjs && node scripts/patch-gallery-lightbox-grid.mjs && node scripts/patch-import-surat.mjs && node scripts/patch-seeded-admin.mjs && node scripts/patch-seeded-mobile-actions.mjs",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
@@ -15,11 +15,11 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@google/genai": "^2.12.0",
     "@google/generative-ai": "^0.24.1",
-    "@supabase/supabase-js": "^2.95.2",
+    "@supabase/supabase-js": "^2.95.0",
     "browser-image-compression": "^2.0.2",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.0",
-    "firebase": "^12.16.0",
+    "firebase": "^12.16.3",
     "framer-motion": "^12.34.3",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
@@ -29,13 +29,12 @@
     "pdfjs-dist": "^5.4.54",
     "react": "^18.3.1",
     "react-avatar-editor": "^14.0.0",
-    "react-datepicker": "^9.1.0",
     "react-dom": "^18.3.1",
     "react-easy-crop": "^5.5.6",
     "react-router-dom": "^7.13.0",
     "react-zoom-pan-pinch": "^4.0.3",
     "recharts": "^3.10.0",
-    "sweetalert2": "^11.26.0",
+    "sweetalert2": "^11.26.3",
     "swiper": "^12.1.0",
     "xlsx": "^0.18.0",
     "uuid": "^13.0.0"
@@ -45,7 +44,7 @@
     "@resvg/resvg-js": "^2.6.2",
     "@types/express": "^5.0.6",
     "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
+    "@types/react-dom": "^18.3.1",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
@@ -53,7 +52,7 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^8.3.0",
+    "typescript-eslint": "^8.3.3",
     "vite": "^5.4.2"
   }
 }
