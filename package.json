@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "prebuild": "node scripts/patch-admin-member-menus.mjs && node scripts/patch-navbar-realtime.mjs && node scripts/patch-performance.mjs && node scripts/patch-public-routing.mjs && node scripts/patch-modern-public-news.mjs && node scripts/patch-news-share-preview.mjs && node scripts/patch-gallery-mobile-detail.mjs && node scripts/patch-gallery-supabase-source.mjs && node scripts/patch-gallery-album-mobile.mjs && node scripts/patch-gallery-photo-grid.mjs && node scripts/patch-gallery-share-preview.mjs && node scripts/patch-gallery-lightbox-grid.mjs && node scripts/patch-import-surat.mjs && node scripts/patch-seeded-admin.mjs && node scripts/patch-seeded-mobile-actions.mjs",
+    "prebuild": "node scripts/patch-admin-member-menus.mjs && node scripts/patch-navbar-realtime.mjs && node scripts/patch-performance.mjs && node scripts/patch-public-routing.mjs && node scripts/patch-modern-public-news.mjs && node scripts/patch-news-share-preview.mjs && node scripts/patch-gallery-mobile-detail.mjs && node scripts/patch-gallery-supabase-source.mjs && node scripts/patch-gallery-album-mobile.mjs && node scripts/patch-gallery-photo-grid.mjs && node scripts/patch-gallery-share-preview.mjs && node scripts/patch-gallery-lightbox-grid.mjs && node scripts/patch-import-surat.mjs && node scripts/patch-seeded-admin.mjs && node scripts/patch-seeded-mobile-actions.mjs && node scripts/patch-pendaftaran-pembayaran.mjs",
     "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
@@ -28,8 +28,8 @@
     "mammoth": "^1.10.0",
     "pdfjs-dist": "^5.4.54",
     "react": "^18.3.1",
-    "react-avatar-editor": "^14.0.0",
     "react-dom": "^18.3.1",
+    "react-avatar-editor": "^14.0.0",
     "react-easy-crop": "^5.5.6",
     "react-router-dom": "^7.13.0",
     "react-zoom-pan-pinch": "^4.0.3",
