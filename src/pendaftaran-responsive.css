@@ -8,8 +8,38 @@
 .pendaftaran-responsive button { max-width: 100%; }
 
 @media (max-width: 768px) {
-  .pendaftaran-responsive { width: 100% !important; max-width: 100vw !important; min-width: 0 !important; overflow-x: hidden; padding-left: 12px !important; padding-right: 12px !important; }
-  .pendaftaran-responsive form { width: 100% !important; max-width: 100% !important; min-width: 0 !important; }
+  .pendaftaran-responsive {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Form dan modal Tambah Atlet harus memakai lebar layar penuh. */
+  .pendaftaran-responsive form,
+  .pendaftaran-responsive .fixed form {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .pendaftaran-responsive .fixed {
+    width: 100% !important;
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .pendaftaran-responsive .fixed > div,
+  .pendaftaran-responsive .fixed [class*="max-w-"] {
+    width: 100% !important;
+    max-width: calc(100vw - 24px) !important;
+    min-width: 0 !important;
+  }
+
+  /* Semua grid form menjadi satu kolom agar label tidak terjepit. */
   .pendaftaran-responsive [class*="grid-cols-12"],
   .pendaftaran-responsive [class*="grid-cols-11"],
   .pendaftaran-responsive [class*="grid-cols-10"],
@@ -20,22 +50,90 @@
   .pendaftaran-responsive [class*="grid-cols-5"],
   .pendaftaran-responsive [class*="grid-cols-4"],
   .pendaftaran-responsive [class*="grid-cols-3"],
-  .pendaftaran-responsive [class*="grid-cols-2"] { grid-template-columns: minmax(0, 1fr) !important; }
-  .pendaftaran-responsive label { display: block !important; width: 100% !important; min-width: 0 !important; max-width: 100% !important; white-space: normal !important; word-break: normal !important; overflow-wrap: normal !important; writing-mode: horizontal-tb !important; text-orientation: mixed !important; letter-spacing: .06em; line-height: 1.25 !important; }
+  .pendaftaran-responsive [class*="grid-cols-2"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Label wajib horizontal: tidak boleh satu huruf per baris. */
+  .pendaftaran-responsive label,
+  .pendaftaran-responsive label * {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    text-align: left !important;
+    letter-spacing: .04em !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Seluruh kontrol form mengikuti lebar kolom. */
   .pendaftaran-responsive input,
   .pendaftaran-responsive select,
-  .pendaftaran-responsive textarea { width: 100% !important; min-width: 0 !important; }
-  .pendaftaran-responsive .overflow-x-auto { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .pendaftaran-responsive textarea {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .pendaftaran-responsive button {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Hilangkan efek col-span desktop yang membuat kolom terlalu sempit. */
+  .pendaftaran-responsive [class*="col-span-"] {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    grid-column: 1 / -1 !important;
+  }
+
+  .pendaftaran-responsive .grid {
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .pendaftaran-responsive .overflow-x-auto {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .pendaftaran-responsive table { min-width: 760px; }
-  .pendaftaran-responsive .grid { min-width: 0; }
-  .pendaftaran-responsive [class*="col-span-"] { min-width: 0 !important; width: 100% !important; }
+
   .pendaftaran-responsive h1,
   .pendaftaran-responsive h2,
-  .pendaftaran-responsive h3 { max-width: 100%; overflow-wrap: anywhere; }
+  .pendaftaran-responsive h3 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  /* Jarak antar field tetap konsisten di layar kecil. */
+  .pendaftaran-responsive form > div,
+  .pendaftaran-responsive form .space-y-4 > *,
+  .pendaftaran-responsive form .space-y-5 > * {
+    min-width: 0 !important;
+  }
 }
 
 @media (max-width: 420px) {
-  .pendaftaran-responsive { padding-left: 8px !important; padding-right: 8px !important; }
+  .pendaftaran-responsive {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .pendaftaran-responsive .fixed > div,
+  .pendaftaran-responsive .fixed [class*="max-w-"] {
+    max-width: calc(100vw - 16px) !important;
+  }
+
   .pendaftaran-responsive .text-2xl { font-size: 1.25rem !important; }
   .pendaftaran-responsive .text-xl { font-size: 1.1rem !important; }
 }
